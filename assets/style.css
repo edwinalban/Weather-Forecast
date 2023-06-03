@@ -1,0 +1,17 @@
+.topbar {
+    background-image: linear-gradient(
+        to left,
+        black 0%,
+        white 100%
+    );
+    color: white;
+}
+
+h2 {
+    text-align: center;
+}
+
+.search {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
