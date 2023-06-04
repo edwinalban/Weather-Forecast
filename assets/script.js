@@ -12,7 +12,7 @@ $( function() {
 });
 
 var searchHandler = function (city) {
-  var city = cityEl.value;
+  var city = cityEl.val();
   console.log(city);
   if (city) {
     getCity(city);
