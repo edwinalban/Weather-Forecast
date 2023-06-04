@@ -8,8 +8,8 @@ $( function() {
   $( "input[type=submit]" ).on( "click", function( event ) {
     event.preventDefault();
     searchHandler();
-  } );
-} );
+  });
+});
 
 var searchHandler = function (city) {
   var city = cityEl.value;
