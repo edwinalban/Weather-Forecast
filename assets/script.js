@@ -2,20 +2,16 @@ var APIKey = "ad20e5505f6378a3c47c258d40adaadd";
 var cityEl = $('#city-search');
 var searchHistoryArr = [];
 
-$(function () {
-  getSearches();
-
-
 // Adds event listener for click on search button
 $( function() {
     $(".widget input[type=submit]").button();
     $("input[type=submit]").on("click", function(event) {
       event.preventDefault();
-      saveSearches();
       searchHandler();
+      getSearches();
     });
   });
-});
+
 
 var searchHandler = function (city) {
   var city = cityEl.val().trim();
@@ -27,6 +23,7 @@ var searchHandler = function (city) {
   }
 };
 
+
 var getCityForecast = function (city) {
   var queryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&cnt=6&appid=" + APIKey;
   fetch(queryURL)
@@ -34,8 +31,11 @@ var getCityForecast = function (city) {
       if (response.ok) {
         response.json()
         .then(function (data) {
-          console.log(data);
-          searchHistoryArr.push(data.list);
+          
+          searchHistoryArr.push(city);
+    
+          saveSearches();
+          displaySearches();
         });
       } else {
         alert('Error: ' + response.statusText);
@@ -46,14 +46,30 @@ var getCityForecast = function (city) {
     });
 };
 
+
 function saveSearches() {
   localStorage.setItem("searchHistoryArr", JSON.stringify(searchHistoryArr));
 };
+
 
 function getSearches() {
   var update = JSON.parse(localStorage.getItem("searchHistoryArr"));
 
   if (update) {
     searchHistoryArr = update;
+  };
+};
+
+
+function displaySearches() {
+  var container = document.querySelector('#searches');
+  container.innerHTML = "";
+
+  for (var i = 0; i < searchHistoryArr.length; i++) {
+    var buttonEL = document.createElement('button');
+    buttonEL.classList = 'btn btn-dark col-12 m-2';
+    buttonEL.textContent = searchHistoryArr[i].charAt(0).toUpperCase() + searchHistoryArr[i].slice(1);
+
+    container.append(buttonEL);
   };
 };
