@@ -7,12 +7,18 @@ $( function() {
     $(".widget input[type=submit]").button();
     $("input[type=submit]").on("click", function(event) {
       event.preventDefault();
+ 
       searchHandler();
-      getSearches();
+      document.getElementById('city-search').value = ""; 
     });
   });
 
+// Adds event listener for click on Clear History button
+$('#clear-history').on("click", function() {
+  clearHistory();
+});
 
+// If there is user input in city search field, calls getCityForcast, returns alert otherwise
 var searchHandler = function (city) {
   var city = cityEl.val().trim();
   if (city) {
@@ -23,7 +29,9 @@ var searchHandler = function (city) {
   }
 };
 
-
+// Calls OpenWeather API, returns data as JSON, updates search history array with new search term
+// Saves search to local storage, displays previous searches
+// If API response is not ok, returns alert with error message 
 var getCityForecast = function (city) {
   var queryURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&cnt=6&appid=" + APIKey;
   fetch(queryURL)
@@ -46,12 +54,12 @@ var getCityForecast = function (city) {
     });
 };
 
-
+// Saves search history array to local storage
 function saveSearches() {
   localStorage.setItem("searchHistoryArr", JSON.stringify(searchHistoryArr));
 };
 
-
+// Gets updated search history array from local storage
 function getSearches() {
   var update = JSON.parse(localStorage.getItem("searchHistoryArr"));
 
@@ -60,16 +68,28 @@ function getSearches() {
   };
 };
 
-
+// Clears buttons from viewport, displays updated search history for each search performed
 function displaySearches() {
-  var container = document.querySelector('#searches');
-  container.innerHTML = "";
+  var searchHistory = document.querySelector('#searches');
+  searchHistory.innerHTML = "";
+  getSearches();
 
+// Creates/appends new button for each search performed, converts user input to capitalized word
   for (var i = 0; i < searchHistoryArr.length; i++) {
-    var buttonEL = document.createElement('button');
-    buttonEL.classList = 'btn btn-dark col-12 m-2';
-    buttonEL.textContent = searchHistoryArr[i].charAt(0).toUpperCase() + searchHistoryArr[i].slice(1);
+    var buttonEl = document.createElement('button');
+    buttonEl.classList = 'btn btn-dark col-12 m-2';
+    buttonEl.textContent = searchHistoryArr[i].charAt(0).toUpperCase() + searchHistoryArr[i].slice(1);
 
-    container.append(buttonEL);
+    searchHistory.append(buttonEl);
   };
+};
+
+displaySearches();
+
+// Clears search history array and local storage
+function clearHistory() {
+  var previousSearches = document.querySelector('#searches');
+  previousSearches.innerHTML = "";
+  searchHistoryArr = [];
+  localStorage.clear();
 };

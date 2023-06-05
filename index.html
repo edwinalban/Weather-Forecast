@@ -16,8 +16,11 @@
           <div class="d-flex flex-column col-3">
               <label for="city-search" class="form-label search m-2">Search for a City:</label>
               <input type="text" class="form-control border-dark m-2" id="city-search" placeholder="Enter City Here">
-              <div class="widget d-flex flex-column col-12 pb-3 border-bottom border-dark m-2">
-                  <input class="btn btn-dark" type="submit" value="Search">
+              <div class="widget d-flex flex-column col-12 m-2">
+                <input class="btn btn-dark" type="submit" value="Search">
+              </div>
+              <div class="d-flex flex-column col-12 pb-3 m-2 border-bottom border-dark">
+                <button class="btn btn-dark col-12" id="clear-history">Clear History</button>
               </div>
               <div class="search-history-container d-flex flex-column col-12" id="searches"></div>
           </div>
