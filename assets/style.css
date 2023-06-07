@@ -1,3 +1,4 @@
+/* Adds linear gradient/text color to topbar */
 .topbar {
     background-image: linear-gradient(
         to left,
@@ -7,15 +8,18 @@
     color: white;
 }
 
+/* Aligns text to center for h2 elements */
 h2 {
     text-align: center;
 }
 
+/* Sets font size/weight for search label */
 .search {
     font-size: 1.5rem;
     font-weight: bold;
 }
 
+/* Adds linear gradient to buttons */
 button {
     background-image: linear-gradient(
         to left,
