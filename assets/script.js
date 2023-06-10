@@ -1,6 +1,7 @@
 var APIKey = "ad20e5505f6378a3c47c258d40adaadd";
 var cityEl = $('#city-search');
 var searchHistoryArr = [];
+var buttonIdArr = [];
 
 // Adds event listener for click on search button
 $( function() {
@@ -17,6 +18,15 @@ $( function() {
 $('#clear-history').on("click", function() {
   clearHistory();
 });
+
+//Adds event listener for click on previous search buttons
+buttonIdArr.forEach(function(button) {
+  $("#" + button).addEventListener("click", function() {
+    var city = $(this).textContent;
+    searchHandler(city);
+  })
+})
+
 
 // If there is user input in city search field, calls getCityForcast, returns alert otherwise
 var searchHandler = function (city) {
@@ -56,10 +66,14 @@ var getCityForecast = function (city) {
         response.json()
         .then(function (data) {
           console.log(data);
+            if (searchHistoryArr.includes(city)) {
+            searchHistoryArr = searchHistoryArr;
+          } else {
           searchHistoryArr.push(city);
-    
+          }
           saveSearches();
           displaySearches();
+          saveSearchIds();
           createForecastCards(data)
         });
       } else {
@@ -76,6 +90,11 @@ function saveSearches() {
   localStorage.setItem("searchHistoryArr", JSON.stringify(searchHistoryArr));
 };
 
+// Saves search ids to local storage
+function saveSearchIds () {
+  localStorage.setItem("buttonIdArr", JSON.stringify(buttonIdArr));
+}
+
 // Gets updated search history array from local storage
 function getSearches() {
   var update = JSON.parse(localStorage.getItem("searchHistoryArr"));
@@ -85,20 +104,41 @@ function getSearches() {
   };
 };
 
+// Gets updated search Ids from local storage
+function getSearchIds () {
+  var update = JSON.parse(localStorage.getItem("buttonIdArr"));
+
+  if (update) {
+    buttonIdArr = update;
+  }
+}
+
 // Clears buttons from viewport, displays updated search history for each search performed
 function displaySearches() {
   var searchHistory = document.querySelector('#searches');
   searchHistory.innerHTML = "";
   getSearches();
+  getSearchIds();
 
 // Creates/appends new button for each search performed, converts user input to capitalized word(s)
+//Adds button ids to buttonIdArr
   for (var i = 0; i < searchHistoryArr.length; i++) {
     var buttonEl = document.createElement('button');
     buttonEl.classList = 'btn btn-dark col-12 m-2';
+    buttonEl.setAttribute('id', 'button' + i);
     buttonEl.textContent = searchHistoryArr[i][0].toUpperCase() + searchHistoryArr[i].substr(1);
 
     searchHistory.append(buttonEl);
+    
   };
+
+    if (buttonEl === undefined) {
+      buttonIdArr = [];
+    } else if (buttonIdArr.includes(buttonEl.id)) {
+      buttonIdArr = buttonIdArr;
+    } else {
+      buttonIdArr.push(buttonEl.id);
+    }
 };
 
 displaySearches();
