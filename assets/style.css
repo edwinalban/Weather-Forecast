@@ -27,3 +27,11 @@ button {
         white 100%
     );
 }
+
+/* Adds media query for screens 280px wide, or smaller to reduce form label text size */
+@media screen and (max-width: 280px) {
+    .search {
+        font-size: 1rem;
+        font-weight: bold;
+    };
+}

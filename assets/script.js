@@ -164,7 +164,7 @@ function createForecastCards(data) {
       var cardBody = document.createElement("div");
       cardBody.setAttribute("class", "card-body");
 
-      var convertDate = dayjs.unix(data.list[i].dt).format("MM/DD/YYYY");
+      var convertDate = dayjs.unix(data.list[i].dt).utc().format("MM/DD/YYYY");
       var date = document.createElement("p");
       date.textContent = `Date: ${convertDate}`;
 
