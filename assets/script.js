@@ -1,7 +1,6 @@
 var APIKey = "ad20e5505f6378a3c47c258d40adaadd";
 var cityEl = $('#city-search');
 var searchHistoryArr = [];
-var buttonIdArr = [];
 
 // Adds event listener for click on search button
 $( function() {
@@ -18,15 +17,6 @@ $( function() {
 $('#clear-history').on("click", function() {
   clearHistory();
 });
-
-//Adds event listener for click on previous search buttons
-buttonIdArr.forEach(function(button) {
-  $("#" + button).addEventListener("click", function() {
-    var city = $(this).textContent;
-    searchHandler(city);
-  })
-})
-
 
 // If there is user input in city search field, calls getCityForcast, returns alert otherwise
 var searchHandler = function (city) {
@@ -73,7 +63,6 @@ var getCityForecast = function (city) {
           }
           saveSearches();
           displaySearches();
-          saveSearchIds();
           createForecastCards(data)
         });
       } else {
@@ -90,11 +79,6 @@ function saveSearches() {
   localStorage.setItem("searchHistoryArr", JSON.stringify(searchHistoryArr));
 };
 
-// Saves search ids to local storage
-function saveSearchIds () {
-  localStorage.setItem("buttonIdArr", JSON.stringify(buttonIdArr));
-}
-
 // Gets updated search history array from local storage
 function getSearches() {
   var update = JSON.parse(localStorage.getItem("searchHistoryArr"));
@@ -104,41 +88,29 @@ function getSearches() {
   };
 };
 
-// Gets updated search Ids from local storage
-function getSearchIds () {
-  var update = JSON.parse(localStorage.getItem("buttonIdArr"));
-
-  if (update) {
-    buttonIdArr = update;
-  }
-}
-
 // Clears buttons from viewport, displays updated search history for each search performed
 function displaySearches() {
   var searchHistory = document.querySelector('#searches');
   searchHistory.innerHTML = "";
   getSearches();
-  getSearchIds();
 
 // Creates/appends new button for each search performed, converts user input to capitalized word(s)
-//Adds button ids to buttonIdArr
   for (var i = 0; i < searchHistoryArr.length; i++) {
     var buttonEl = document.createElement('button');
     buttonEl.classList = 'btn btn-dark col-12 m-2';
     buttonEl.setAttribute('id', 'button' + i);
-    buttonEl.textContent = searchHistoryArr[i][0].toUpperCase() + searchHistoryArr[i].substr(1);
+    buttonEl.textContent = searchHistoryArr[i];
 
     searchHistory.append(buttonEl);
-    
-  };
 
-    if (buttonEl === undefined) {
-      buttonIdArr = [];
-    } else if (buttonIdArr.includes(buttonEl.id)) {
-      buttonIdArr = buttonIdArr;
-    } else {
-      buttonIdArr.push(buttonEl.id);
-    }
+// Adds event listener to each button as it is added to make API calls
+    buttonEl.addEventListener("click", function(e) {
+      var city = e.target.textContent;
+
+      currentWeather(city);
+      getCityForecast(city);
+    });
+  };
 };
 
 displaySearches();
@@ -172,7 +144,7 @@ function displayCurrentWeather (data) {
   displayIcon.setAttribute("src", `http://openweathermap.org/img/wn/${icon}@2x.png`);
   displayIcon.setAttribute("style", "height: 40px; width: 40px;")
   cityName.append(displayIcon)
-}
+};
 
 
 // Creates/appends cards to display forecast information to viewport
@@ -191,11 +163,9 @@ function createForecastCards(data) {
       
       var cardBody = document.createElement("div");
       cardBody.setAttribute("class", "card-body");
-      cardBody.setAttribute("id", "card" + i);
 
       var convertDate = dayjs.unix(data.list[i].dt).format("MM/DD/YYYY");
       var date = document.createElement("p");
-      date.setAttribute("id", "date" + i);
       date.textContent = `Date: ${convertDate}`;
 
       var icon = data.list[i].weather[0].icon;
@@ -204,15 +174,12 @@ function createForecastCards(data) {
       displayIcon.setAttribute("style", "height: 40px; width: 40px;")
 
       var temp = document.createElement("p");
-      temp.setAttribute("id", "temp" + i);
       temp.textContent = `Temp: ${data.list[i].main.temp} °F`;
 
       var wind = document.createElement("p");
-      wind.setAttribute("id", "wind" + i);
       wind.textContent = `Wind: ${data.list[i].wind.speed} MPH`;
 
       var humidity = document.createElement("p");
-      humidity.setAttribute("id", "wind" + i);
       humidity.textContent = `Humidity: ${data.list[i].main.humidity} %`;
 
       cardContainer.append(card);
