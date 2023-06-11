@@ -38,7 +38,6 @@ var currentWeather = function (city) {
       if (response.ok) {
         response.json()
         .then(function (data) {
-          console.log(data);
           displayCurrentWeather(data);
         });
       };
@@ -55,7 +54,6 @@ var getCityForecast = function (city) {
       if (response.ok) {
         response.json()
         .then(function (data) {
-          console.log(data);
             if (searchHistoryArr.includes(city)) {
             searchHistoryArr = searchHistoryArr;
           } else {
