@@ -141,7 +141,7 @@ function displayCurrentWeather (data) {
 
   var icon = data.weather[0].icon;
   var displayIcon = document.createElement("img");
-  displayIcon.setAttribute("src", `http://openweathermap.org/img/wn/${icon}@2x.png`);
+  displayIcon.setAttribute("src", `https://openweathermap.org/img/wn/${icon}@2x.png`);
   displayIcon.setAttribute("style", "height: 40px; width: 40px;")
   cityName.append(displayIcon)
 };
@@ -170,7 +170,7 @@ function createForecastCards(data) {
 
       var icon = data.list[i].weather[0].icon;
       var displayIcon = document.createElement("img");
-      displayIcon.setAttribute("src", `http://openweathermap.org/img/wn/${icon}@2x.png`);
+      displayIcon.setAttribute("src", `https://openweathermap.org/img/wn/${icon}@2x.png`);
       displayIcon.setAttribute("style", "height: 40px; width: 40px;")
 
       var temp = document.createElement("p");
