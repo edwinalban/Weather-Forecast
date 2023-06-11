@@ -49,7 +49,7 @@ var currentWeather = function (city) {
 // Saves search to local storage, displays previous searches
 // If API response is not ok, returns alert with error message 
 var getCityForecast = function (city) {
-  var forecastURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=" + APIKey;
+  var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=" + APIKey;
   fetch(forecastURL)
     .then(function (response) {
       if (response.ok) {
@@ -162,7 +162,7 @@ function createForecastCards(data) {
       card.setAttribute("style", "width: 12rem")
       
       var cardBody = document.createElement("div");
-      cardBody.setAttribute("class", "card-body bg-light");
+      cardBody.setAttribute("class", "card-body");
 
       var convertDate = dayjs.unix(data.list[i].dt).utc().format("MM/DD/YYYY");
       var date = document.createElement("p");
