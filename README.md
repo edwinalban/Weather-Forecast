@@ -15,9 +15,14 @@ This project can be found here:
 
 https://edwinalban.github.io/Weather-Forecast/
 
-## Installation
+## Technologies Used
 
-N/A
+* JavaScript
+* JQuery
+* Bootstrap (CSS Framework)
+* Day.js
+* HTML
+* CSS
 
 ## Usage
 
